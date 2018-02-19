@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<title>Vidy</title>
+
+	<script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+
+	<style>
+		.content, html, body {
+		    height: 99%;
+		}
+		.content{
+			margin-top: 10px;
+		}
+		.left {
+		    float: left;
+		    width: 50%;
+		    height: 100%;
+		    /*overflow: scroll;*/
+		}
+		.right {
+		    float: left;
+		    width: 50%;
+		    height: 100%;
+		    overflow: scroll;
+		    /*background: yellow;*/
+		}
+		.top {
+			float: left;
+			height: 50%;
+			width: 100%;
+			overflow: scroll;
+			margin-top: 100px;
+			/*background: red;*/
+		}
+		.bottom {
+			float: right;
+			height: 50%;
+			width: 100%;
+			overflow: scroll;
+			/*background: green;*/
+		}
+		.header{
+			width: 100%;
+			position: fixed;
+			/*background: blue;*/
+		}
+	</style>
+</head>
+<body>
+	<div class="content" id="app">
+		<div class="header">
+			<input type="text" placeholder="Search." v-model="search">
+			<button @click="submit">Search</button>
+			<div><h1>Video Frame</h1></div>	
+		</div>
+		<div class="content">
+			<div class="left">
+				<div class="top">
+					<iframe v-if="hasVid" id="existing-iframe-example" width="640" height="360" :src=yt frameborder="0" style="border: solid 4px #37474F">
+						
+					</iframe>	
+				</div>
+				<div class="bottom columns is-multiline">
+					<div class="column" v-for="res in result">
+						<img :src="res[1]" :alt="res[0]">
+						<a class="button is-danger is-outlined" @click="play(res)">
+						${res[0]}</a>
+					</div>
+				</div>	
+			</div>
+			
+			<div class="right">
+				<h1>Lyrics</h1>				
+				<p class="lyric" v-for="lyric in lyrics">${lyric}</p>
+			</div>
+		</div>
+		
+	</div>
+</body>
+</html>
+<script>
+
+	new Vue({
+		delimiters: ['${', '}'],
+		el:"#app",
+		data: {
+			search:"",
+			result:[],
+			yt: "Novidadsfa",
+			hasVid: false,
+			lyrics:[]
+		},
+		methods: {
+			submit(){
+				var self = this
+				axios.get("/songs/id="+this.search)
+				.then(function(response){
+					console.log(response)
+					self.result = response.data
+				})
+				.catch(function(error){
+					console.log("Error"+error)
+				})
+			},
+			play(value){
+				var self = this
+				axios.post("/play",{
+					name: value[0],
+					link: value[2],
+				})
+				.then(function(response){
+					console.log(response)
+					self.hasVid = true
+					self.yt = "https://www.youtube.com/embed/"+response.data.VideoID+"?enablejsapi=1"
+					self.lyrics = response.data.Lyric
+
+				})
+			}
+
+		},
+	})
+</script>

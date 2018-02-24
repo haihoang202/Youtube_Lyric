@@ -10,59 +10,67 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
 
 	<style>
-		.content, html, body {
-		    height: 99%;
-		}
-		.content{
-			margin-top: 10px;
-		}
-		.left {
-		    float: left;
-		    width: 50%;
-		    height: 100%;
-		    /*overflow: scroll;*/
-		}
-		.right {
-		    float: left;
-		    width: 50%;
-		    height: 100%;
-		    overflow: scroll;
-		    /*background: yellow;*/
-		}
-		.top {
-			float: left;
-			height: 50%;
-			width: 100%;
-			overflow: scroll;
-			margin-top: 100px;
-			/*background: red;*/
-		}
-		.bottom {
-			float: right;
-			height: 50%;
-			width: 100%;
-			overflow: scroll;
-			/*background: green;*/
-		}
-		.header{
-			width: 100%;
-			position: fixed;
-			/*background: blue;*/
-		}
-	</style>
+	.content, html, body {
+		height: 99%;
+	}
+	.content{
+		margin-top: 0px;
+	}
+	.left {
+		float: left;
+		width: 50%;
+		height: 100%;
+		/*overflow: scroll;*/
+	}
+	.right {
+		float: left;
+		width: 50%;
+		height: 100%;
+		overflow: scroll;
+		/*background: yellow;*/
+	}
+	.top {
+		float: left;
+		height: 50%;
+		width: 100%;
+		overflow: scroll;
+		margin-top: 100px;
+		/*background: red;*/
+	}
+	.bottom {
+		float: right;
+		height: 50%;
+		width: 100%;
+		overflow: scroll;
+		/*background: green;*/
+	}
+	.header{
+		width: 100%;
+		position: fixed;
+		padding: 30px;
+		/*background: blue;*/
+	}
+</style>
 </head>
 <body>
 	<div class="content" id="app">
-		<div class="header">
-			<input type="text" placeholder="Search." v-model="search">
-			<button @click="submit">Search</button>
-			<div><h1>Video Frame</h1></div>	
-		</div>
-		<div class="content">
-			<div class="left">
-				<div class="top">
+		<nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+			<div class="navbar-brand">
+				<a class="navbar-item" href="https://bulma.io">
+					<p class="title">Vidy</p>
+				</a>
+				<div class="navbar-item">
+					<input class="navbar-item" type="text" placeholder="Search." v-model="search">	
+					<button @click="submit" class="navbar-item">Search</button>
+				</div>
+			</div>
+		</nav>
+	
+		<div class="content columns">
+			<div class="left column is-8">
+				<div class="top has-text-centered">
 					<iframe v-if="hasVid" id="existing-iframe-example" width="640" height="360" :src=yt frameborder="0" style="border: solid 4px #37474F">
-						
+
 					</iframe>	
 				</div>
 				<div class="bottom columns is-multiline">
@@ -73,13 +81,13 @@
 					</div>
 				</div>	
 			</div>
-			
-			<div class="right">
+
+			<div class="right column is-4">
 				<h1>Lyrics</h1>				
 				<p class="lyric" v-for="lyric in lyrics">${lyric}</p>
 			</div>
 		</div>
-		
+
 	</div>
 </body>
 </html>
